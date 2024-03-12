@@ -1,24 +1,8 @@
 package team_001;
 
 public class PhysicalBook extends Item{
-    public PhysicalBook(String title, int ID, String author, Boolean physical){
-        this.title = title;
-        this.ID = ID;
-        this.author = author;
-        this.physical = physical;
-    }
-    @Override
-    boolean borrow() {
-        if (counter == 10){
-            return false;
-        } else {
-            counter++;
-            return true;
-        }
-    }
+    public PhysicalBook(String title, String author){
+        super(title, author);
 
-    @Override
-    void returnItem() {
-        counter--;
     }
 }

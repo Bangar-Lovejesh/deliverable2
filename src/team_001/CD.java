@@ -1,22 +1,7 @@
-public class CD extends Item{
-    public CD(String title, int ID, String author, Boolean physical){
-        this.title = title;
-        this.ID = ID;
-        this.author = author;
-        this.physical = physical;
-    }
-    @Override
-    boolean borrow() {
-        if (counter == 10){
-            return false;
-        } else {
-            counter++;
-            return true;
-        }
-    }
+package team_001;
 
-    @Override
-    void returnItem() {
-        counter--;
+public class CD extends Item{
+    public CD(String title, int ID, String author){
+    	super(title, author);
     }
 }
