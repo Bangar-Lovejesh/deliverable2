@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Client {
+abstract public class Client {
 	private String username;
 	private int id;
 	private String email;

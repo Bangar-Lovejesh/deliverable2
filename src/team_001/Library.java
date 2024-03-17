@@ -32,6 +32,7 @@ public class Library {
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
         	System.out.println(copiesAvailable.size());
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
+            System.out.println("changed" +  copiesAvailable.get(1));
             client.borrowItem(item);
             this.updateCopiesAvailable(item.author, item.title, this.copiesAvailable.get(id));
         } else {
@@ -74,7 +75,7 @@ public class Library {
       
     	
         File inputFile = new File(csvFilePath);
-        File tempFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\temp.txt");
+        File tempFile = new File("C:\\Users\\Gurdip Kuddu\\Desktop\\team_001\\src\\team_001\\temp.txt");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {

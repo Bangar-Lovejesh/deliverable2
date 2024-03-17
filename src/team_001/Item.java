@@ -1,6 +1,6 @@
 package team_001;
 
-public abstract class Item {
+public abstract class Item implements Cloneable {
     private static int lastAssignedID = 0;
 
     String title;
@@ -16,6 +16,11 @@ public abstract class Item {
 	public int getID() {
 		return this.ID;
 	}
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+    	return super.clone(); 	
+    }
 }
 
 

@@ -10,7 +10,7 @@ class LibraryTest {
 
 	@Test
 	void test() {
-		Library lib = new Library("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\ItemDatabase.txt");
+		Library lib = new Library("C:\\Users\\Gurdip Kuddu\\Desktop\\team_001\\src\\team_001\\ItemDatabase.txt");
 		
 		Client fac = new Faculty("username", 2, "email", "password", lib);
 		ArrayList<Item> items = new ArrayList<>();
@@ -20,7 +20,15 @@ class LibraryTest {
 		}
 
 		lib.borrowItem(fac, items.get(0));
-		System.out.println(lib.copiesAvailable.containsKey(1) && lib.copiesAvailable.get(1) > 0);
+		Item item = new PhysicalBook("fff", "Fff");
+		try {
+			Item clonedbook = (PhysicalBook) item.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(lib.copiesAvailable.get(1));
+		
 	}
 
 }
