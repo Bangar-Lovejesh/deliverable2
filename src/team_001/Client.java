@@ -20,7 +20,7 @@ public class Client {
 		this.id = id;
 		this.library = libary;
 	}
-
+	
 	public ArrayList<Item> checkItemsOverdue(){
 		ArrayList<Item> overdueItems = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();

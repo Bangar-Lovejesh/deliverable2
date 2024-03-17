@@ -6,11 +6,11 @@ import java.util.HashMap;
 
 public class Library {
 	private static Library library = null;
-    private HashMap<Integer, Item> inventory;
-    private HashMap<Integer, Integer> copiesAvailable;
+    public HashMap<Integer, Item> inventory;
+    HashMap<Integer, Integer> copiesAvailable;
     private String csvFilePath;
 
-    private Library(String csvFilePath) {
+    Library(String csvFilePath) {
         this.inventory = new HashMap<>();
         this.copiesAvailable = new HashMap<>();
         this.csvFilePath = csvFilePath;
@@ -27,7 +27,9 @@ public class Library {
 
     public void borrowItem(Client client, Item item) {
         int id = item.getID();
+        System.out.println(copiesAvailable.size());
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
+        	System.out.println(copiesAvailable.size());
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
             client.borrowItem(item);
             this.updateCopiesAvailable(item.author, item.title, this.copiesAvailable.get(id));
@@ -56,10 +58,11 @@ public class Library {
                 String author = parts[1];
                 int copies = Integer.parseInt(parts[2]);
 
-       
+                System.out.println(title + author + copies);
                 Item item = new PhysicalBook(title, author);
                 inventory.put(item.ID, item);
                 copiesAvailable.put(item.ID, copies);
+                System.out.println(item.ID);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +73,7 @@ public class Library {
       
     	
         File inputFile = new File(csvFilePath);
-        File tempFile = new File("temp.csv");
+        File tempFile = new File("C:\\Users\\Gurdip Kuddu\\Desktop\\team_001\\src\\team_001\\temp.txt");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
