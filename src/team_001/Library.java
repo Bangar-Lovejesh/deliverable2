@@ -27,7 +27,8 @@ public class Library {
 
     public void borrowItem(Client client, Item item) {
         int id = item.getID();
-        System.out.println(copiesAvailable.size());
+//        System.out.println(copiesAvailable.size());
+        System.out.println(copiesAvailable.containsKey(id)+ " "+ copiesAvailable.get(id));
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
         	System.out.println(copiesAvailable.size());
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
@@ -73,7 +74,7 @@ public class Library {
       
     	
         File inputFile = new File(csvFilePath);
-        File tempFile = new File("C:\\Users\\Gurdip Kuddu\\Desktop\\team_001\\src\\team_001\\temp.txt");
+        File tempFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\temp.txt");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {

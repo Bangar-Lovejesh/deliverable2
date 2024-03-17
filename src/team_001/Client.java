@@ -9,7 +9,7 @@ public class Client {
 	private int id;
 	private String email;
 	private String password;
-	private HashMap<Item, LocalDate> borrowed;
+	private HashMap<Item, LocalDate> borrowed = new HashMap<Item, LocalDate>();
 	private HashMap<Newsletter, String> subscribed;
 	private Library library;
 	
@@ -50,7 +50,7 @@ public class Client {
 	}
 	
 	public void borrowItem(Item item) {
-		this.library.borrowItem(this, item);
+//		this.library.borrowItem(this, item);
 		
 		LocalDate dueDate = LocalDate.now().plusDays(30);
 		this.borrowed.put(item, dueDate);
