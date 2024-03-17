@@ -25,18 +25,19 @@ public class Library {
     	return Library.library;	
     }
 
-    public void borrowItem(Client client, Item item) {
+    public boolean borrowItem(Client client, Item item) {
         int id = item.getID();
 //        System.out.println(copiesAvailable.size());
-        System.out.println(copiesAvailable.containsKey(id)+ " "+ copiesAvailable.get(id));
+        //System.out.println(copiesAvailable.containsKey(id)+ " "+ copiesAvailable.get(id));
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
-        	System.out.println(copiesAvailable.size());
+        	//System.out.println(copiesAvailable.size());
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
-            System.out.println("changed" +  copiesAvailable.get(1));
+            //System.out.println("changed" +  copiesAvailable.get(1));
             client.borrowItem(item);
             this.updateCopiesAvailable(item.author, item.title, this.copiesAvailable.get(id));
+            return true;
         } else {
-            System.out.println("Item is not available for borrowing.");
+            return false;
         }
     }
 

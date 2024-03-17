@@ -51,8 +51,7 @@ abstract public class Client {
 	}
 	
 	public void borrowItem(Item item) {
-//		this.library.borrowItem(this, item);
-		
+		library.borrowItem(this, item);
 		LocalDate dueDate = LocalDate.now().plusDays(30);
 		this.borrowed.put(item, dueDate);
 	}
@@ -104,5 +103,9 @@ abstract public class Client {
 	
 	public void setBorrowed(HashMap<Item, LocalDate> borrowed) {
 		this.borrowed = borrowed;
+	}
+	
+	public void addCourse() {
+		
 	}
 }
