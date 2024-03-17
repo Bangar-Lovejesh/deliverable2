@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 abstract public class Client {
+	public static int current_id = 1;
 	private String username;
 	private int id;
 	private String email;
@@ -13,11 +14,11 @@ abstract public class Client {
 	private HashMap<Newsletter, String> subscribed;
 	private Library library;
 	
-	public Client(String username, int id, String email, String password, Library libary) {
+	public Client(String username, String email, String password, Library libary) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.id = id;
+		this.id = ++Client.current_id;
 		this.library = libary;
 	}
 	
