@@ -12,7 +12,7 @@ class LibraryTest {
 	void test() {
 		Library lib = new Library("C:\\Users\\Gurdip Kuddu\\Desktop\\team_001\\src\\team_001\\ItemDatabase.txt");
 		
-		Client fac = new Faculty("username", 2, "email", "password", lib);
+		Client fac = new Faculty("username", "email", "password", lib);
 		ArrayList<Item> items = new ArrayList<>();
 		
 		for(Item item: lib.inventory.values()) {
