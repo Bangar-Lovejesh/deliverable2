@@ -22,14 +22,15 @@ abstract public class Client {
 		this.library = libary;
 	}
 	
-	public ArrayList<Item> checkItemsOverdue(){
+	public ArrayList<Item> checkItemsOverdue(BorrowedIterator iterator){
 		ArrayList<Item> overdueItems = new ArrayList<>();
         LocalDate currentDate = LocalDate.now();
-        for (Item item : borrowed.keySet()) {
-            LocalDate dueDate = this.borrowed.get(item);
-            if (currentDate.isAfter(dueDate)) {
-                overdueItems.add(item);
-            }
+        while(iterator.hasNext()) {
+        	Item key = iterator.next();
+        	LocalDate val = borrowed.get(key);
+        	 if (currentDate.isAfter(val)) {
+                 overdueItems.add(key);
+             }
         }
         return overdueItems;
 	}

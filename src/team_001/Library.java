@@ -27,6 +27,7 @@ public class Library {
 
     public boolean borrowItem(Client client, Item item) {
         int id = item.getID();
+        
 //        System.out.println(copiesAvailable.size());
         //System.out.println(copiesAvailable.containsKey(id)+ " "+ copiesAvailable.get(id));
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
