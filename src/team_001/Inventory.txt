@@ -1,0 +1,6 @@
+type;title;author;stock
+CD;Take Care;Drake;20
+Magazine;GQ;Harsh Kuddu;15
+PhysicalBook;The Hunger Games;Suzanne Collins;12
+DigitalBook;Introduction to Algorithms;Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein;20
+NewsLetter;Studio News;Aadil Baig;4

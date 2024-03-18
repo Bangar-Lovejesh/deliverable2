@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,13 +20,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.Font;
 
+
 public class MainGUI {
 
     private JFrame frame;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private String csvFilePath = "C:\\Users\\Gurdip Kuddu\\Desktop\\team_001\\src\\team_001\\ItemDatabase.txt"; // Update with your CSV file path
-
+    private String bookFilePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt";
+    private String csvFilePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\ItemDatabase.txt"; // Update with your CSV file path
+    private String currUser;
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -84,6 +88,7 @@ public class MainGUI {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
                 if (usermangement.readUsers(username, password)) {
+                	currUser = username;
                     openNewScreen();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Error",
@@ -188,35 +193,65 @@ public class MainGUI {
         return list.get(0); 
     }
 
+
+    private JComboBox<String> itemComboBox; // Declare JComboBox
+    private ArrayList<String> currUserItems = new ArrayList<String>();
+
     private void openNewScreen() {
         frame.dispose(); // Close current frame
 
         JFrame newFrame = new JFrame();
-        newFrame.setBounds(100, 100, 450, 300);
+        newFrame.setBounds(100, 100, 600, 200); // Adjust frame size as needed
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         newFrame.getContentPane().setLayout(null);
 
-        // Add your components for the new screen here
-        JLabel lblWelcome = new JLabel("Welcome to the New Screen!");
-        lblWelcome.setBounds(40, 30, 200, 14);
+        JLabel lblWelcome = new JLabel("Select an Item:");
+        lblWelcome.setBounds(40, 30, 150, 14);
         newFrame.getContentPane().add(lblWelcome);
 
-        JTextArea textArea = new JTextArea();
-        textArea.setBounds(40, 60, 350, 150);
-        newFrame.getContentPane().add(textArea);
+        itemComboBox = new JComboBox<>(); // Initialize JComboBox
+        itemComboBox.setBounds(180, 27, 250, 20); // Adjust combo box size as needed
+        newFrame.getContentPane().add(itemComboBox);
+
+        JButton btnSelect = new JButton("Rent/Subscribe");
+        btnSelect.setBounds(250, 80, 89, 23);
+        newFrame.getContentPane().add(btnSelect);
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(csvFilePath));
+            BufferedReader reader = new BufferedReader(new FileReader(bookFilePath));
             String line;
             while ((line = reader.readLine()) != null) {
-                textArea.append(line + "\n");
+                String[] columns = line.split(";"); // Split the line into columns based on ';'
+                if (columns.length >= 4) { // Ensure at least 4 columns exist (type, title, author, stock)
+                    String itemInfo = columns[0] + ": " + columns[1]; // Concatenate type and title
+                    itemComboBox.addItem(itemInfo); // Add item to JComboBox
+                }
             }
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        btnSelect.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String selectedItem = (String) itemComboBox.getSelectedItem(); // Get selected item
+                if (selectedItem != null) {
+                    // You can store the selected item in a variable or perform any other action here
+                	currUserItems.add(selectedItem);
+                    JOptionPane.showMessageDialog(newFrame, currUser + " selected: " + selectedItem, "Selected Item",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    if(currUserItems.isEmpty() == false) {
+                        for(String s: currUserItems) {
+                        	System.out.println(currUser + " selected " + s);
+                        }}
+                } else {
+                    JOptionPane.showMessageDialog(newFrame, "Please select an item", "No Item Selected",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        
         newFrame.setVisible(true);
     }
-
 }
+
