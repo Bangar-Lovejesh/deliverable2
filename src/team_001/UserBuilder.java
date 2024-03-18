@@ -48,28 +48,28 @@ class UserBuilder {
         if (email == null || password == null) {
             throw new IllegalStateException("Email and password are required");
         }
-        return new Faculty(username, email, password, lib);
+        return new Faculty(username, email, password);
     }
     
     public Client buildStudent() {
         if (email == null || password == null) {
             throw new IllegalStateException("Email and password are required");
         }
-        return new Student(username,email, password, lib, new ArrayList<>());
+        return new Student(username,email, password, new ArrayList<>());
     }
 
     public Client buildNonFacultyStaff() {
         if (email == null || password == null) {
             throw new IllegalStateException("Email and password are required");
         }
-        return new NonFacultyStaff(username, email, password, lib);
+        return new NonFacultyStaff(username, email, password);
     }
     
     public Client buildVisitor() {
         if (email == null || password == null) {
             throw new IllegalStateException("Email and password are required");
         }
-        return new visitor(username, email, password, lib);
+        return new visitor(username, email, password);
     }
     
 }
