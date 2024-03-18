@@ -14,12 +14,11 @@ abstract public class Client {
 	private HashMap<Newsletter, String> subscribed;
 	private Library library;
 	
-	public Client(String username, String email, String password, Library libary) {
+	public Client(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.id = ++Client.current_id;
-		this.library = libary;
 	}
 	
 	public ArrayList<Item> checkItemsOverdue(BorrowedIterator iterator){
