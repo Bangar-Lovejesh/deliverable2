@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Library {
+public class Library{
 	private static Library library = null;
     public HashMap<Integer, Item> inventory;
     HashMap<Integer, Integer> copiesAvailable;
