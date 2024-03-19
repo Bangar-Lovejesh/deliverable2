@@ -1,5 +1,7 @@
 package team_001;
 
+import java.util.HashMap;
+
 public class LibraryFacade {
     private Library library;
 
@@ -17,6 +19,10 @@ public class LibraryFacade {
 
     public int checkOverdue(Client client, Item item) {
         return client.checkOverdue(item);
+    }
+    
+    public HashMap<Integer, Item> getInventory(){
+    	return library.inventory;
     }
 
 }

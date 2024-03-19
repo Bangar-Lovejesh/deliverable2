@@ -1,7 +1,7 @@
 package team_001;
 
 public class Faculty extends Client {
-	public Faculty(String username, String email, String password) {
-		super(username, email, password);
+	public Faculty(String email, String password) {
+		super(email, password);
 	}
 }

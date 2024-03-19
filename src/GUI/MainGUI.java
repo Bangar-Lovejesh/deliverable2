@@ -27,8 +27,13 @@ public class MainGUI {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private String bookFilePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt";
-    private String csvFilePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\ItemDatabase.txt"; // Update with your CSV file path
+    private String csvFilePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\UserDatabase.txt"; // Update with your CSV file path
     private String currUser;
+    private LibraryFacade libraryfacade = new LibraryFacade(bookFilePath);
+    private JComboBox<String> itemComboBox; // Declare JComboBox
+    private ArrayList<String> currUserItems = new ArrayList<String>();
+    private Client client;
+    String type = "Faculty";
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -81,7 +86,7 @@ public class MainGUI {
         JButton btnRegister = new JButton("Register");
         btnRegister.setBounds(200, 200, 89, 23);
         frame.getContentPane().add(btnRegister);
-        
+//        System.out.println("Here 1");
         UserManagement usermangement = new UserManagement(csvFilePath);
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -89,6 +94,17 @@ public class MainGUI {
                 String password = new String(passwordField.getPassword());
                 if (usermangement.readUsers(username, password)) {
                 	currUser = username;
+                	if(type.equals("Student")) {
+                		System.out.println("inside student if");
+              		  client = new Student(username,password, new ArrayList<>());
+              	  } else if(type.equals("Faculty")) {
+              		System.out.println("inside faculty if");
+              		  client = new Faculty(username,password);
+              	  } else if(type.equals("Visitor")) {
+              		  client = new visitor(username,password);
+              	  } else {
+              		  client = new NonFacultyStaff(username,password);
+              	  }
                     openNewScreen();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Error",
@@ -172,7 +188,7 @@ public class MainGUI {
                 String name = nameField.getText();
                 String email = emailField.getText();
                 String password = new String(passwordField.getPassword());
-                String type = (String) typeComboBox.getSelectedItem();
+                type = (String) typeComboBox.getSelectedItem();
 
                 // Perform registration
                 Client c = m.writeUser(name, password, email, type);
@@ -194,10 +210,10 @@ public class MainGUI {
     }
 
 
-    private JComboBox<String> itemComboBox; // Declare JComboBox
-    private ArrayList<String> currUserItems = new ArrayList<String>();
+    
 
     private void openNewScreen() {
+    	
         frame.dispose(); // Close current frame
 
         JFrame newFrame = new JFrame();
@@ -216,34 +232,25 @@ public class MainGUI {
         JButton btnSelect = new JButton("Rent/Subscribe");
         btnSelect.setBounds(250, 80, 89, 23);
         newFrame.getContentPane().add(btnSelect);
+        for(Item item: libraryfacade.getInventory().values()) {
+    		itemComboBox.addItem(item.getID() + " " +item.getTitle());
+    	}
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(bookFilePath));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] columns = line.split(";"); // Split the line into columns based on ';'
-                if (columns.length >= 4) { // Ensure at least 4 columns exist (type, title, author, stock)
-                    String itemInfo = columns[0] + ": " + columns[1]; // Concatenate type and title
-                    itemComboBox.addItem(itemInfo); // Add item to JComboBox
-                }
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         btnSelect.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String selectedItem = (String) itemComboBox.getSelectedItem(); // Get selected item
+                int id = Integer.parseInt(selectedItem.split(" ")[0]);
                 if (selectedItem != null) {
                     // You can store the selected item in a variable or perform any other action here
-                	currUserItems.add(selectedItem);
-                    JOptionPane.showMessageDialog(newFrame, currUser + " selected: " + selectedItem, "Selected Item",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    if(currUserItems.isEmpty() == false) {
-                        for(String s: currUserItems) {
-                        	System.out.println(currUser + " selected " + s);
-                        }}
+                	currUserItems.add(selectedItem.split(" ")[1]);
+                    JOptionPane.showMessageDialog(newFrame, currUser + " selected: " + selectedItem.split(" ")[1], "Selected Item",
+                            JOptionPane.INFORMATION_MESSAGE);                   
+                    client.borrowItem(libraryfacade.getInventory().get(id));
+//                    if(currUserItems.isEmpty() == false) {
+//                        for(String s: currUserItems) {
+//                        	System.out.println(currUser + " selected " + s);
+//                        }}
                 } else {
                     JOptionPane.showMessageDialog(newFrame, "Please select an item", "No Item Selected",
                             JOptionPane.ERROR_MESSAGE);

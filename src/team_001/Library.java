@@ -10,7 +10,7 @@ public class Library{
     HashMap<Integer, Integer> copiesAvailable;
     private String csvFilePath;
 
-    Library(String csvFilePath) {
+    public Library(String csvFilePath) {
         this.inventory = new HashMap<>();
         this.copiesAvailable = new HashMap<>();
         this.csvFilePath = csvFilePath;
@@ -26,16 +26,20 @@ public class Library{
     }
 
     public boolean borrowItem(Client client, Item item) {
-        int id = item.getID();
-        
-//        System.out.println(copiesAvailable.size());
-        //System.out.println(copiesAvailable.containsKey(id)+ " "+ copiesAvailable.get(id));
+        int id = item.getID() + 5;
+        System.out.println("inside clinent class");
+        System.out.println(id);
+        for(int i: copiesAvailable.keySet()) {
+        	System.out.println(i);
+        }
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
+        	System.out.println("inside if statement");
         	//System.out.println(copiesAvailable.size());
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
             //System.out.println("changed" +  copiesAvailable.get(1));
-            client.borrowItem(item);
-            this.updateCopiesAvailable(item.author, item.title, this.copiesAvailable.get(id));
+//            client.borrowItem(item);
+            System.out.println("Here1");
+            this.updateCopiesAvailable(item.author, item.title, -1);
             return true;
         } else {
             return false;
@@ -56,11 +60,11 @@ public class Library{
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-       
-                String[] parts = line.split(",");
-                String title = parts[0];
-                String author = parts[1];
-                int copies = Integer.parseInt(parts[2]);
+//            	type;title;author;stock
+                String[] parts = line.split(";");
+                String title = parts[1];
+                String author = parts[2];
+                int copies = Integer.parseInt(parts[3]);
 
                 System.out.println(title + author + copies);
                 Item item = new PhysicalBook(title, author);
@@ -76,22 +80,24 @@ public class Library{
     private void updateCopiesAvailable(String author, String title, int change) {
       
     	
-        File inputFile = new File(csvFilePath);
-        File tempFile = new File("C:\\Users\\Gurdip Kuddu\\Desktop\\team_001\\src\\team_001\\temp.txt");
-
+        File inputFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt");
+        File tempFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\temp.txt");
+        System.out.println("Inside update copies");
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                String lineAuthor = parts[0];  
+                String[] parts = line.split(";");
+                String lineAuthor = parts[2];  
                 String lineTitle = parts[1];  
                 if (lineAuthor.equals(author) && lineTitle.equals(title)) {
-                    int copies = Integer.parseInt(parts[2]) + change;
-                    parts[2] = String.valueOf(copies);
+                	System.out.println("inside update copies if");
+                    int copies = Integer.parseInt(parts[3]) + change;
+                    parts[3] = String.valueOf(copies);
                     line = String.join(",", parts);
                 }
+                System.out.println(parts[3] + ' '+ change + " " + author + " "+ title + " " + lineAuthor + ' ' + lineTitle);
                 writer.write(line + System.lineSeparator());
             }
         } catch (IOException e) {
@@ -99,9 +105,9 @@ public class Library{
         }
 
 
-        if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
-            System.err.println("Failed to update CSV file.");
-        }
+//        if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
+//            System.err.println("Failed to update CSV file.");
+//        }
     }
 
 }

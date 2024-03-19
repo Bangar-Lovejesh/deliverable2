@@ -14,11 +14,12 @@ abstract public class Client {
 	private HashMap<Newsletter, String> subscribed;
 	private Library library;
 	
-	public Client(String username, String email, String password) {
+	public Client(String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.id = ++Client.current_id;
+		library = new Library("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt");
 	}
 	
 	public ArrayList<Item> checkItemsOverdue(BorrowedIterator iterator){
@@ -51,9 +52,11 @@ abstract public class Client {
 	}
 	
 	public void borrowItem(Item item) {
-		library.borrowItem(this, item);
+		System.out.println("start of client.borrow");
+		this.library.borrowItem(this, item);
 		LocalDate dueDate = LocalDate.now().plusDays(30);
 		this.borrowed.put(item, dueDate);
+		System.out.println("end of client.borrow");
 	}
 	
 	public void returnItem(Item item) {

@@ -17,6 +17,7 @@ public class UserManagement {
 
     //name,id,email,password
     public boolean readUsers(String name, String password) {
+    	System.out.println("here 2");
         try (BufferedReader br = new BufferedReader(new FileReader(csvPath))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -54,13 +55,13 @@ public class UserManagement {
     	  //String username, String email, String password, Library libary
     	  Client client;
     	  if(type.equals("Student")) {
-    		  client = new Student(name,email,password, new ArrayList<>());
+    		  client = new Student(email,password, new ArrayList<>());
     	  } else if(type.equals("Faculty")) {
-    		  client = new Faculty(name, email,password);
+    		  client = new Faculty(email,password);
     	  } else if(type.equals("Visitor")) {
-    		  client = new visitor(name, email,password);
+    		  client = new visitor(email,password);
     	  } else {
-    		  client = new NonFacultyStaff(name,email,password);
+    		  client = new NonFacultyStaff(email,password);
     	  }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvPath, true))) {
         	bw.write("\n"+client.getUsername()+","+client.getId()+","+client.getEmail()+","+client.getPassword());

@@ -1,7 +1,7 @@
 package team_001;
 
 public abstract class Item implements Cloneable {
-    private static int lastAssignedID = 0;
+    private static int lastAssignedID = 1;
 
     String title;
     int ID;
@@ -10,7 +10,14 @@ public abstract class Item implements Cloneable {
     public Item(String title, String author) {
         this.title = title;
         this.author = author;
-        this.ID = ++lastAssignedID;
+        this.ID = lastAssignedID;
+        lastAssignedID++;
+    }
+    public String getTitle() {
+    	return title;
+    }
+    public String getAuthor() {
+    	return author;
     }
 
 	public int getID() {
