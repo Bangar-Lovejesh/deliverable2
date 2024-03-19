@@ -10,12 +10,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -32,8 +37,9 @@ public class MainGUI {
     private LibraryFacade libraryfacade = new LibraryFacade(bookFilePath);
     private JComboBox<String> itemComboBox; // Declare JComboBox
     private ArrayList<String> currUserItems = new ArrayList<String>();
+    ArrayList<Client> clientList = new ArrayList<>();
     private Client client;
-    String type = "Faculty";
+    String type;
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -93,24 +99,27 @@ public class MainGUI {
         JButton btnRegister = new JButton("Register");
         btnRegister.setBounds(200, 200, 89, 23);
         frame.getContentPane().add(btnRegister);
+        ArrayList<Client> list = new  ArrayList<>();
 //        System.out.println("Here 1");
         UserManagement usermangement = new UserManagement(csvFilePath);
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	String name = currUser;
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
+                String type = usermangement.getType(username);
                 if (usermangement.readUsers(username, password)) {
                 	currUser = username;
                 	if(type.equals("Student")) {
                 		System.out.println("inside student if");
-              		  client = new Student(username,password, new ArrayList<>());
+              		  client = new Student(name, username,password, new ArrayList<>());
               	  } else if(type.equals("Faculty")) {
               		System.out.println("inside faculty if");
-              		  client = new Faculty(username,password);
+              		  client = new Faculty(name, username,password);
               	  } else if(type.equals("Visitor")) {
-              		  client = new visitor(username,password);
+              		  client = new visitor(name, username,password);
               	  } else {
-              		  client = new NonFacultyStaff(username,password);
+              		  client = new NonFacultyStaff(name, username,password);
               	  }
                 	libraryfacade.populizer(currUser, currUserItems);
                     openNewScreen();
@@ -120,11 +129,12 @@ public class MainGUI {
                 }
             }
         });
-        ArrayList<Client> list = new  ArrayList<>();
+        
 
         btnRegister.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               list.add(openRegistrationPage(usermangement)); 
+               openRegistrationPage(usermangement);
+               list.add(clientList.get(0)); 
             }
         });
         
@@ -137,7 +147,7 @@ public class MainGUI {
         return false; // Placeholder, always return false for now
     }
 
-    private Client openRegistrationPage(UserManagement m) {
+    private void openRegistrationPage(UserManagement m) {
         JFrame registerFrame = new JFrame("Registration");
         registerFrame.setBounds(100, 100, 450, 300);
         registerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -189,7 +199,7 @@ public class MainGUI {
         JButton btnSubmit = new JButton("Submit");
         btnSubmit.setBounds(180, 200, 89, 23);
         registerFrame.getContentPane().add(btnSubmit);
-        ArrayList<Client> list = new ArrayList<>();
+        
         btnSubmit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Retrieve values from fields
@@ -200,10 +210,12 @@ public class MainGUI {
 
                 // Perform registration
                 Client c = m.writeUser(name, password, email, type);
-                list.add(c);
+                clientList.add(c);
+//                System.out.println("Outside if " + c == null);
                 if (c != null) {
                     JOptionPane.showMessageDialog(registerFrame, "Registration successful", "Success",
                             JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("Inside if " +type);
                     registerFrame.dispose(); // Close registration frame
                 } else {
                     JOptionPane.showMessageDialog(registerFrame, "Registration failed", "Error",
@@ -213,8 +225,7 @@ public class MainGUI {
         });
 
         registerFrame.setVisible(true);
-
-        return list.get(0); 
+         
     }
 
 
@@ -243,7 +254,18 @@ public class MainGUI {
         for(Item item: libraryfacade.getInventory().values()) {
     		itemComboBox.addItem(item.getID() + " " +item.getTitle());
     	}
-
+        DefaultListModel<String> listModel = new DefaultListModel<>(); // Create a list model
+        JList<String> itemList = new JList<>(listModel); // Create a JList with the list model
+        JScrollPane scrollPane = new JScrollPane(itemList); // Add the JList to a scroll pane
+        scrollPane.setBounds(40, 120, 500, 100); // Adjust scroll pane size as needed
+        newFrame.getContentPane().add(scrollPane);
+        
+        for(String s: currUserItems) {
+        	listModel.addElement(s);
+        }
+        JButton btnReturn = new JButton("Return");
+        btnReturn.setBounds(250, 230, 150, 23);
+        newFrame.getContentPane().add(btnReturn);
 
         btnSelect.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -251,8 +273,11 @@ public class MainGUI {
                 int id = Integer.parseInt(selectedItem.split(" ")[0]);
                 if (selectedItem != null) {
                     // You can store the selected item in a variable or perform any other action here
+                	if (currUserItems.size() <10){
                 	System.out.println(selectedItem);
-                	currUserItems.add(selectedItem.substring(1));
+                	currUserItems.add(selectedItem);
+                	listModel.clear();
+                	listModel.addAll(currUserItems);
                     JOptionPane.showMessageDialog(newFrame, currUser + " selected: " + selectedItem.split(" ")[1], "Selected Item",
                             JOptionPane.INFORMATION_MESSAGE);                   
                     client.borrowItem(libraryfacade.getInventory().get(id));
@@ -261,12 +286,38 @@ public class MainGUI {
 //                        for(String s: currUserItems) {
 //                        	System.out.println(currUser + " selected " + s);
 //                        }}
-                } else {
+                }else{
+                	JOptionPane.showMessageDialog(newFrame, "Renting Limit Reached", "CAN ONLY RENT 10 AT A TIME. RETURN TO PROCEEd",
+                        JOptionPane.ERROR_MESSAGE);
+                	} 
+                }else {
+                
+                	
                     JOptionPane.showMessageDialog(newFrame, "Please select an item", "No Item Selected",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+        
+        btnReturn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Add your return action here
+                // This action will be performed when the "Return" button is clicked
+                // For example, you can remove the selected item from currUserItems and update the list model
+                String selectedItem = itemList.getSelectedValue();
+                int id = Integer.parseInt(selectedItem.split(" ")[0]);
+                if (selectedItem != null) {
+                    currUserItems.remove(selectedItem);
+                    listModel.removeElement(selectedItem);
+                    libraryfacade.bookKeeping(currUser, currUserItems);
+                    client.returnItem(libraryfacade.getInventory().get(id));
+                } else {
+                    JOptionPane.showMessageDialog(newFrame, "Please select an item to return", "No Item Selected",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         
         newFrame.setVisible(true);
     }

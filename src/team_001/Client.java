@@ -14,7 +14,7 @@ abstract public class Client {
 	private HashMap<Newsletter, String> subscribed;
 	private Library library;
 	
-	public Client(String email, String password) {
+	public Client(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;

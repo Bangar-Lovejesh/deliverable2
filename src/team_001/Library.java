@@ -24,21 +24,24 @@ public class Library{
     
     	return Library.library;	
     }
-
+    
+    public void returnItem(Client client, Item item) {
+        int id = item.getID() + 5;
+        if (copiesAvailable.containsKey(id)) {
+            copiesAvailable.put(id, copiesAvailable.get(id) + 1);
+//            client.returnItem(item);
+            this.updateCopiesAvailable(item.author, item.title, 1);
+            System.out.println("inside if return class");
+        }
+    }
     public boolean borrowItem(Client client, Item item) {
         int id = item.getID() + 5;
-        System.out.println("inside clinent class");
-        System.out.println(id);
-        for(int i: copiesAvailable.keySet()) {
-        	System.out.println(i);
-        }
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
         	System.out.println("inside if statement");
         	//System.out.println(copiesAvailable.size());
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
             //System.out.println("changed" +  copiesAvailable.get(1));
 //            client.borrowItem(item);
-            System.out.println("Here1");
             this.updateCopiesAvailable(item.author, item.title, -1);
             return true;
         } else {
@@ -47,14 +50,7 @@ public class Library{
     }
 
 
-    public void returnItem(Client client, Item item) {
-        int id = item.getID();
-        if (copiesAvailable.containsKey(id)) {
-            copiesAvailable.put(id, copiesAvailable.get(id) + 1);
-            client.returnItem(item);
-            this.updateCopiesAvailable(item.author, item.title, this.copiesAvailable.get(id));
-        }
-    }
+    
 
     private void loadInventoryFromCSV() {
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
@@ -83,15 +79,18 @@ public class Library{
 //            	type;title;author;stock
                 String[] parts = line.split(";");
                 String user = parts[0];
-                String books = parts[1];
+                String[] books = parts[1].split(",");
                 if(currUser.equals(user)) {
-                	currUserItems.add(books);
+                	for(String s: books) {
+                		currUserItems.add(s);
+                	}
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
 
     public void bookKeeping(String name, ArrayList<String> list) {
     	String filePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\booksOwed.txt"; // Update with your file path
