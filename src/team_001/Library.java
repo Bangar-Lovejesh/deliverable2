@@ -95,14 +95,30 @@ public class Library{
                 	System.out.println("inside update copies if");
                     int copies = Integer.parseInt(parts[3]) + change;
                     parts[3] = String.valueOf(copies);
-                    line = String.join(",", parts);
+                    
                 }
-                System.out.println(parts[3] + ' '+ change + " " + author + " "+ title + " " + lineAuthor + ' ' + lineTitle);
+                line = String.join(";", parts);
                 writer.write(line + System.lineSeparator());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try (BufferedReader reader = new BufferedReader(new FileReader(tempFile));
+                BufferedWriter writer = new BufferedWriter(new FileWriter(inputFile))) {
+
+               String line;
+               while ((line = reader.readLine()) != null) {
+                   String[] parts = line.split(";");
+                   String lineAuthor = parts[2];  
+                   String lineTitle = parts[1];
+                   int copies = Integer.parseInt(parts[3]);
+                   parts[3] = String.valueOf(copies);
+                   line = String.join(";", parts);
+                   writer.write(line + System.lineSeparator());
+               }
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
 
 
 //        if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
