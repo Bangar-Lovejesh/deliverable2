@@ -76,6 +76,72 @@ public class Library{
             e.printStackTrace();
         }
     }
+    public void populizer(String currUser, ArrayList<String> currUserItems) {
+    	try (BufferedReader reader = new BufferedReader(new FileReader("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\booksOwed.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+//            	type;title;author;stock
+                String[] parts = line.split(";");
+                String user = parts[0];
+                String books = parts[1];
+                if(currUser.equals(user)) {
+                	currUserItems.add(books);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void bookKeeping(String name, ArrayList<String> list) {
+    	String filePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\booksOwed.txt"; // Update with your file path
+
+        try {
+            // Read existing data from the file
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            StringBuilder fileContent = new StringBuilder();
+            String line;
+            boolean userFound = false;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts.length >= 2 && parts[0].equals(name)) {
+                    // Update existing user's books list
+                    fileContent.append(name).append(";");
+                    for (String book : list) {
+                        fileContent.append(book).append(",");
+                    }
+                    fileContent.deleteCharAt(fileContent.length() - 1); // Remove extra comma
+                    fileContent.append("\n");
+                    userFound = true;
+                } else {
+                    fileContent.append(line).append("\n");
+                }
+            }
+            reader.close();
+
+            if (!userFound) {
+                // If user not found, add new entry
+                fileContent.append(name).append(";");
+                for (String book : list) {
+                    fileContent.append(book).append(",");
+                }
+                fileContent.deleteCharAt(fileContent.length() - 1); // Remove extra comma
+                fileContent.append("\n");
+            }
+
+            // Write updated data back to the file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            writer.write(fileContent.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    	
+
+
     
     private void updateCopiesAvailable(String author, String title, int change) {
       
@@ -119,7 +185,7 @@ public class Library{
            } catch (IOException e) {
                e.printStackTrace();
            }
-
+       
 
 //        if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
 //            System.err.println("Failed to update CSV file.");

@@ -48,10 +48,17 @@ public class MainGUI {
     }
 
     public MainGUI() {
+    	
         initialize();
+        
+        
+        
     }
+    
+    
 
-    private void initialize() {
+
+	private void initialize() {
         frame = new JFrame();
         frame.setBounds(100, 100, 450, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,6 +112,7 @@ public class MainGUI {
               	  } else {
               		  client = new NonFacultyStaff(username,password);
               	  }
+                	libraryfacade.populizer(currUser, currUserItems);
                     openNewScreen();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Error",
@@ -243,10 +251,12 @@ public class MainGUI {
                 int id = Integer.parseInt(selectedItem.split(" ")[0]);
                 if (selectedItem != null) {
                     // You can store the selected item in a variable or perform any other action here
-                	currUserItems.add(selectedItem.split(" ")[1]);
+                	System.out.println(selectedItem);
+                	currUserItems.add(selectedItem.substring(1));
                     JOptionPane.showMessageDialog(newFrame, currUser + " selected: " + selectedItem.split(" ")[1], "Selected Item",
                             JOptionPane.INFORMATION_MESSAGE);                   
                     client.borrowItem(libraryfacade.getInventory().get(id));
+                    libraryfacade.bookKeeping(currUser, currUserItems);
 //                    if(currUserItems.isEmpty() == false) {
 //                        for(String s: currUserItems) {
 //                        	System.out.println(currUser + " selected " + s);

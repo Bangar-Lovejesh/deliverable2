@@ -1,5 +1,6 @@
 package team_001;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LibraryFacade {
@@ -23,6 +24,12 @@ public class LibraryFacade {
     
     public HashMap<Integer, Item> getInventory(){
     	return library.inventory;
+    }
+    public void bookKeeping(String name, ArrayList<String> list) {
+    	library.bookKeeping(name,list);
+    }
+    public void populizer(String currUser, ArrayList<String> currUserItems) {
+    	library.populizer(currUser, currUserItems);
     }
 
 }
