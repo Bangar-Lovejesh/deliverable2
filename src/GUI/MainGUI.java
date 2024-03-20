@@ -42,6 +42,7 @@ public class MainGUI {
     ArrayList<Client> clientList = new ArrayList<>();
     private Client client;
     String type;
+    private boolean bookDueSoon = false;
     static int bookOwed =0;
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
@@ -69,7 +70,7 @@ public class MainGUI {
 
 	private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 450, 300);
+        frame.setBounds(200, 200, 550, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
@@ -239,7 +240,7 @@ public class MainGUI {
         frame.dispose(); // Close current frame
 
         JFrame newFrame = new JFrame();
-        newFrame.setBounds(100, 100, 600, 200); // Adjust frame size as needed
+        newFrame.setBounds(400, 400, 600, 400); // Adjust frame size as needed
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         newFrame.getContentPane().setLayout(null);
 
@@ -281,12 +282,18 @@ public class MainGUI {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         ArrayList<String> temp = new ArrayList<String>();
+        boolean bookDueSoon = false;
+        long daysDifference = 0;
         for (String item : currUserItems) {
             String[] parts = item.split(":");
             String book = parts[0];
             String date = parts[1];
             LocalDate dateFromDB = LocalDate.parse(date, formatter);
-            long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(dateFromDB, today);
+            daysDifference = java.time.temporal.ChronoUnit.DAYS.between(dateFromDB, today);
+            if(daysDifference>=9) {
+            	bookDueSoon = true;
+            }
+            
             if(daysDifference >=10) {
             	bookOwed++;      
             	temp.add(book + ":" + date + ":Owed");
@@ -311,13 +318,14 @@ public class MainGUI {
         JButton btnReturn = new JButton("Return");
         btnReturn.setBounds(250, 230, 150, 23);
         newFrame.getContentPane().add(btnReturn);
-
+        
         btnSelect.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String selectedItem = (String) itemComboBox.getSelectedItem(); // Get selected item
                 int id = Integer.parseInt(selectedItem.split(" ")[0]);
                 if (selectedItem != null) {
                     // You can store the selected item in a variable or perform any other action here
+                	
                 	if(bookOwed <= 3)
                 	{if (currUserItems.size() <10){
                 		 System.out.println(selectedItem);
@@ -377,6 +385,10 @@ public class MainGUI {
 
         
         newFrame.setVisible(true);
+        if(bookDueSoon){
+    		JOptionPane.showMessageDialog(newFrame, "YOU HAVE SOME BOOKS OVERDUE SOON", "OVERDUE NOTICE",
+                    JOptionPane.ERROR_MESSAGE);
+    	}
     }
 }
 
