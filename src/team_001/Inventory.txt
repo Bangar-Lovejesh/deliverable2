@@ -1,5 +1,5 @@
-CD;Take Care;Drake;576
+CD;Take Care;Drake;581
 Magazine;GQ;Harsh Kuddu;1396
-PhysicalBook;The Hunger Games;Suzanne Collins;789
-DigitalBook;Introduction to Algorithms;Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein;1898
+PhysicalBook;The Hunger Games;Suzanne Collins;788
+DigitalBook;Introduction to Algorithms;Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest and Clifford Stein;1897
 NewsLetter;Studio News;Aadil Baig;398

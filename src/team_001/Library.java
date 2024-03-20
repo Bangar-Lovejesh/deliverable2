@@ -29,19 +29,13 @@ public class Library{
         int id = item.getID() + 5;
         if (copiesAvailable.containsKey(id)) {
             copiesAvailable.put(id, copiesAvailable.get(id) + 1);
-//            client.returnItem(item);
             this.updateCopiesAvailable(item.author, item.title, 1);
-            System.out.println("inside if return class");
         }
     }
     public boolean borrowItem(Client client, Item item) {
         int id = item.getID() + 5;
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
-        	System.out.println("inside if statement");
-        	//System.out.println(copiesAvailable.size());
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
-            //System.out.println("changed" +  copiesAvailable.get(1));
-//            client.borrowItem(item);
             this.updateCopiesAvailable(item.author, item.title, -1);
             return true;
         } else {
@@ -56,12 +50,10 @@ public class Library{
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFilePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-//            	type;title;author;stock
                 String[] parts = line.split(";");
                 String title = parts[1];
                 String author = parts[2];
                 int copies = Integer.parseInt(parts[3]);
-
                 System.out.println(title + author + copies);
                 Item item = new PhysicalBook(title, author);
                 inventory.put(item.ID, item);
@@ -76,7 +68,6 @@ public class Library{
     	try (BufferedReader reader = new BufferedReader(new FileReader("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\booksOwed.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-//            	type;title;author;stock
                 String[] parts = line.split(";");
                 String user = parts[0];
                 String[] books = parts[1].split(",");
@@ -96,7 +87,6 @@ public class Library{
     	String filePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\booksOwed.txt"; // Update with your file path
 
         try {
-            // Read existing data from the file
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             StringBuilder fileContent = new StringBuilder();
             String line;
@@ -104,8 +94,8 @@ public class Library{
 
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
+                System.out.println("Storing " + line);
                 if (parts.length >= 2 && parts[0].equals(name)) {
-                    // Update existing user's books list
                     fileContent.append(name).append(";");
                     for (String book : list) {
                         fileContent.append(book).append(",");
@@ -147,7 +137,6 @@ public class Library{
     	
         File inputFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt");
         File tempFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\temp.txt");
-        System.out.println("Inside update copies");
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
 
@@ -184,11 +173,7 @@ public class Library{
            } catch (IOException e) {
                e.printStackTrace();
            }
-       
-
-//        if (!inputFile.delete() || !tempFile.renameTo(inputFile)) {
-//            System.err.println("Failed to update CSV file.");
-//        }
+      
     }
 
 }

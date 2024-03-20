@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -40,6 +42,7 @@ public class MainGUI {
     ArrayList<Client> clientList = new ArrayList<>();
     private Client client;
     String type;
+    static int bookOwed =0;
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -259,9 +262,51 @@ public class MainGUI {
         JScrollPane scrollPane = new JScrollPane(itemList); // Add the JList to a scroll pane
         scrollPane.setBounds(40, 120, 500, 100); // Adjust scroll pane size as needed
         newFrame.getContentPane().add(scrollPane);
-        
-        for(String s: currUserItems) {
-        	listModel.addElement(s);
+        LocalDate today = LocalDate.now();
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(";");
+                if (parts[0].equals(currUser)) {
+                    for (int i = 1; i < parts.length; i++) {
+                        String[] bookAndDate = parts[i].split(":");
+                        String book = bookAndDate[0];
+                        String date = bookAndDate[1];
+                        currUserItems.add(book + " (" + date + ")");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        ArrayList<String> temp = new ArrayList<String>();
+        for (String item : currUserItems) {
+            String[] parts = item.split(":");
+            String book = parts[0];
+            String date = parts[1];
+            LocalDate dateFromDB = LocalDate.parse(date, formatter);
+            long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(dateFromDB, today);
+            if(daysDifference >=10) {
+            	bookOwed++;      
+            	temp.add(book + ":" + date + ":Owed");
+            }
+            else {
+            	temp.add(item);
+            }
+            
+        }
+        // Populate JList with currUserItems
+        currUserItems = temp;
+        for(String s:currUserItems) {
+        	String[] parts = s.split(":");
+        	if(parts.length == 3) {
+        		listModel.addElement(parts[0] + " OWED");
+        	}
+        	else {
+        		listModel.addElement(parts[0]);
+        	}
+        	
         }
         JButton btnReturn = new JButton("Return");
         btnReturn.setBounds(250, 230, 150, 23);
@@ -273,23 +318,26 @@ public class MainGUI {
                 int id = Integer.parseInt(selectedItem.split(" ")[0]);
                 if (selectedItem != null) {
                     // You can store the selected item in a variable or perform any other action here
-                	if (currUserItems.size() <10){
-                	System.out.println(selectedItem);
-                	currUserItems.add(selectedItem);
-                	listModel.clear();
-                	listModel.addAll(currUserItems);
-                    JOptionPane.showMessageDialog(newFrame, currUser + " selected: " + selectedItem.split(" ")[1], "Selected Item",
-                            JOptionPane.INFORMATION_MESSAGE);                   
-                    client.borrowItem(libraryfacade.getInventory().get(id));
-                    libraryfacade.bookKeeping(currUser, currUserItems);
-//                    if(currUserItems.isEmpty() == false) {
-//                        for(String s: currUserItems) {
-//                        	System.out.println(currUser + " selected " + s);
-//                        }}
+                	if(bookOwed <= 3)
+                	{if (currUserItems.size() <10){
+                		 System.out.println(selectedItem);
+                         
+                         String bookWithDate = selectedItem + ":" + today.toString();
+                         currUserItems.add(bookWithDate);
+                         listModel.addElement(selectedItem); // Add to list model
+                         JOptionPane.showMessageDialog(newFrame, currUser + " selected: " + selectedItem.split(" ")[1], "Selected Item",
+                                 JOptionPane.INFORMATION_MESSAGE);                   
+                         client.borrowItem(libraryfacade.getInventory().get(id));
+                         libraryfacade.bookKeeping(currUser, currUserItems);
                 }else{
                 	JOptionPane.showMessageDialog(newFrame, "Renting Limit Reached", "CAN ONLY RENT 10 AT A TIME. RETURN TO PROCEEd",
                         JOptionPane.ERROR_MESSAGE);
-                	} 
+                	} }
+                	else {
+                		JOptionPane.showMessageDialog(newFrame, "You owe too many books", "Return some to continue",
+                                JOptionPane.ERROR_MESSAGE);
+                		
+                	}
                 }else {
                 
                 	
@@ -305,16 +353,25 @@ public class MainGUI {
                 // This action will be performed when the "Return" button is clicked
                 // For example, you can remove the selected item from currUserItems and update the list model
                 String selectedItem = itemList.getSelectedValue();
-                int id = Integer.parseInt(selectedItem.split(" ")[0]);
+                itemList.getSelectedIndex();
+                
                 if (selectedItem != null) {
-                    currUserItems.remove(selectedItem);
+                	int id = Integer.parseInt(selectedItem.split(" ")[0]);
+                	currUserItems.remove(itemList.getSelectedIndex());
+                    for(String s: currUserItems) {
+                    	System.out.println("btn Return " + s);
+                    }
+                    
                     listModel.removeElement(selectedItem);
                     libraryfacade.bookKeeping(currUser, currUserItems);
+                    System.out.println(libraryfacade.getInventory().get(id));
                     client.returnItem(libraryfacade.getInventory().get(id));
-                } else {
+                } 
+                else {
                     JOptionPane.showMessageDialog(newFrame, "Please select an item to return", "No Item Selected",
                             JOptionPane.ERROR_MESSAGE);
                 }
+            
             }
         });
 
