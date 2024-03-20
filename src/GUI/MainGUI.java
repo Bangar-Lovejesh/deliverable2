@@ -33,8 +33,8 @@ public class MainGUI {
     private JFrame frame;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private String bookFilePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt";
-    private String csvFilePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\UserDatabase.txt"; // Update with your CSV file path
+    private String bookFilePath = "src\\team_001\\Inventory.txt";
+    private String csvFilePath = "src\\team_001\\UserDatabase.txt"; // Update with your CSV file path
     private String currUser;
     private LibraryFacade libraryfacade = new LibraryFacade(bookFilePath);
     private JComboBox<String> itemComboBox; // Declare JComboBox

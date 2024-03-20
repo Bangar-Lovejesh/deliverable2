@@ -65,7 +65,7 @@ public class Library{
         }
     }
     public void populizer(String currUser, ArrayList<String> currUserItems) {
-    	try (BufferedReader reader = new BufferedReader(new FileReader("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\booksOwed.txt"))) {
+    	try (BufferedReader reader = new BufferedReader(new FileReader("src\\team_001\\booksOwed.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
@@ -84,7 +84,7 @@ public class Library{
     
 
     public void bookKeeping(String name, ArrayList<String> list) {
-    	String filePath = "W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\booksOwed.txt"; // Update with your file path
+    	String filePath = "src\\team_001\\booksOwed.txt"; // Update with your file path
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -135,8 +135,8 @@ public class Library{
     private void updateCopiesAvailable(String author, String title, int change) {
       
     	
-        File inputFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt");
-        File tempFile = new File("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\temp.txt");
+        File inputFile = new File("src\\team_001\\Inventory.txt");
+        File tempFile = new File("src\\team_001\\temp.txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
 
