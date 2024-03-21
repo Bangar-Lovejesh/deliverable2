@@ -97,32 +97,38 @@ public class MainGUI {
         JButton btnRegister = new JButton("Register");
         btnRegister.setBounds(200, 200, 89, 23);
         frame.getContentPane().add(btnRegister);
-        ArrayList<Client> list = new  ArrayList<>();
+//        ArrayList<Client> list = new  ArrayList<>();
 //        System.out.println("Here 1");
-        UserManagement usermangement = new UserManagement(csvFilePath);
+        UserManagement userManagement = new UserManagement(csvFilePath);
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	String name = currUser;
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
-                String type = usermangement.getType(username);
-                if (usermangement.readUsers(username, password)) {
+                String type = userManagement.getType(username);
+                if (userManagement.readUsers(username, password)) {
                 	currUser = username;
-                	if(type.equals("Student")) {
+                	if(type.equals("Faculty")) {
+          	  			System.out.println("inside faculty if");
+          	  			client = new Faculty(name, username,password);
+          	  			facultyGUI fGUI = new facultyGUI(client);
+          	  			fGUI.initialize();
+//          	  			frame.dispose();
+          	  		
+          	  		} else {
+          	  		if(type.equals("Student")) {
                 		System.out.println("inside student if");
-              		  client = new Student(name, username,password, new ArrayList<>());
-              	  } else if(type.equals("Faculty")) {
-              		System.out.println("inside faculty if");
-              		  client = new Faculty(name, username,password);
-              	  } else if(type.equals("Visitor")) {
-              		  client = new visitor(name, username,password);
-              	  } else {
-              		  client = new NonFacultyStaff(name, username,password);
-              	  }
+              		  	client = new Student(name, username,password, new ArrayList<>());
+          	  		} else if(type.equals("Visitor")) {
+          	  			client = new visitor(name, username,password);
+          	  		} else {
+          	  			client = new NonFacultyStaff(name, username,password);
+          	  		}
                 	libraryfacade.populizer(currUser, currUserItems);
                 	libraryBookingGUI libGUI = new libraryBookingGUI(libraryfacade, currUser, currUserItems, client);
                 	libraryfacade = libGUI.initialize();
-//                	openNewScreen();
+          	  		}
+                	
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Error",
                             JOptionPane.ERROR_MESSAGE);
@@ -133,14 +139,12 @@ public class MainGUI {
 
         btnRegister.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-//               openRegistrationPage(usermangement);
-            	frame.dispose(); // Close current frame
-               openRegistrationGUI registration = new openRegistrationGUI(type, usermangement);
+               openRegistrationGUI registration = new openRegistrationGUI(type, userManagement);
                clientList = registration.initialize();
-               list.add(clientList.get(0)); 
+//               list.add(clientList.get(0));
             }
         });
-        
+          
     }
 
 //    private boolean checkCredentials(String username, String password) {

@@ -2,5 +2,5 @@ name,id,email,password
 t1,1,t1@yorku.ca,t1t1,student
 t2,2,t2@yorku.ca,t2t2,student
 t3,3,t3@yorku.ca,t3t3,student
-harsh,2,daddy@21.com,21,student
-admin,2,admin,admin,Student
+faculty,4,f,f,Faculty
+admin,5,admin,admin,Student

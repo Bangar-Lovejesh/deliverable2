@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 abstract public class Client {
-	public static int current_id = 1;
+	public static int current_id = 3;
 	private String username;
 	private int id;
 	private String email;

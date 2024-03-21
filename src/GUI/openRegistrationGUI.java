@@ -21,7 +21,7 @@ public class openRegistrationGUI {
 
 	private JFrame frame;
 	private String type;
-	private UserManagement m;
+	private UserManagement userManagement;
 	private ArrayList<Client> clientList = new ArrayList<>();
 
 	/**
@@ -46,7 +46,7 @@ public class openRegistrationGUI {
 	 */
 	public openRegistrationGUI(String type, UserManagement m) {
 		this.type = type;
-		this.m = m;
+		this.userManagement = m;
 //		initialize();
 	}
 
@@ -54,11 +54,7 @@ public class openRegistrationGUI {
 	 * Initialize the contents of the frame.
 	 * @wbp.parser.entryPoint
 	 */
-	public ArrayList<Client> initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+	public ArrayList<Client> initialize() {		
         frame = new JFrame("Registration");
         frame.setBounds(100, 100, 450, 300);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -120,7 +116,7 @@ public class openRegistrationGUI {
                 type = (String) typeComboBox.getSelectedItem();
 
                 // Perform registration
-                Client c = m.writeUser(name, password, email, type);
+                Client c = userManagement.writeUser(name, password, email, type);
                 clientList.add(c);
 //                System.out.println("Outside if " + c == null);
                 if (c != null) {
