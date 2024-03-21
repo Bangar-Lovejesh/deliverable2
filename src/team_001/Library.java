@@ -34,6 +34,7 @@ public class Library{
     }
     public boolean borrowItem(Client client, Item item) {
         int id = item.getID() + 5;
+        System.out.println("Inside borow Item " + copiesAvailable.get(id));
         if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
             copiesAvailable.put(id, copiesAvailable.get(id) - 1);
             this.updateCopiesAvailable(item.author, item.title, -1);

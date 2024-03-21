@@ -19,7 +19,7 @@ abstract public class Client {
 		this.email = email;
 		this.password = password;
 		this.id = ++Client.current_id;
-		library = new Library("W:\\Yorku\\sem7\\3311\\deliverable 2\\team_001\\src\\team_001\\Inventory.txt");
+		library = new Library("src\\team_001\\Inventory.txt");
 	}
 	
 	public ArrayList<Item> checkItemsOverdue(BorrowedIterator iterator){
@@ -51,12 +51,16 @@ abstract public class Client {
 		this.subscribed.remove(newsletter);
 	}
 	
-	public void borrowItem(Item item) {
+	public boolean borrowItem(Item item) {
 		System.out.println("start of client.borrow");
-		this.library.borrowItem(this, item);
+		if(this.library.borrowItem(this, item)) {
 		LocalDate dueDate = LocalDate.now().plusDays(30);
 		this.borrowed.put(item, dueDate);
 		System.out.println("end of client.borrow");
+		return true;}
+		else {
+			return false;
+		}
 	}
 	
 	public void returnItem(Item item) {
