@@ -1,4 +1,4 @@
-package team_001;
+package GUI;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import GUI.libraryBookingGUI;
+import team_001.Client;
+import team_001.Faculty;
+import team_001.LibraryFacade;
 
 import javax.swing.JButton;
 

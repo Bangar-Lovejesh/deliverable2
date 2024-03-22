@@ -14,7 +14,7 @@ public class Faculty extends Client {
 	
 	public ArrayList<String> getCourses(){
 		ArrayList<String> courses = new ArrayList<String>();
-		int id = -1; // Default value
+		String userName = ""; // Default value
         String course = "";
         String books = "";
         
@@ -25,10 +25,10 @@ public class Faculty extends Client {
                 String[] parts = line.split(";");
 
                 // Extract values
-                id = Integer.parseInt(parts[0]);
-                if(id != this.getId()) {
-                	System.out.println(id);
-                	System.out.println(this.getId());
+                userName = parts[0];
+                if(!userName.equals(getEmail())) {
+                	System.out.println(userName);
+                	System.out.println(this.getEmail());
                 	continue;
                 }
                 

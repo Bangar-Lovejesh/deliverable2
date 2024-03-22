@@ -1,1 +1,1 @@
-4;Intro to CS; CS Fundamentals 1,CS Fundamentals 2
+f;Intro to CS; CS Fundamentals 1,CS Fundamentals 2
