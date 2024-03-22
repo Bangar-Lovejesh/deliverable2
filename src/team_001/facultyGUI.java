@@ -1,6 +1,8 @@
 package team_001;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -9,10 +11,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import GUI.libraryBookingGUI;
+
+import javax.swing.JButton;
+
 public class facultyGUI {
 
 	public JFrame facultyGUI;
 	private Faculty faculty;
+	private LibraryFacade libraryfacade;
+	private String currUser;
+	private ArrayList<String> currUserItems;
 
 	/**
 	 * Launch the application.
@@ -21,7 +30,7 @@ public class facultyGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					facultyGUI window = new facultyGUI(new Faculty(null, null, null));
+					facultyGUI window = new facultyGUI(new Faculty(null, null, null), new LibraryFacade(""), "", new ArrayList<String>());
 					window.facultyGUI.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -33,9 +42,15 @@ public class facultyGUI {
 	/**
 	 * Create the application.
 	 * @param client 
+	 * @param currUserItems 
+	 * @param currUser 
+	 * @param libraryfacade 
 	 */
-	public facultyGUI(Client client) {
+	public facultyGUI(Client client, LibraryFacade libraryfacade, String currUser, ArrayList<String> currUserItems) {
 		this.faculty = (Faculty) client;
+		this.libraryfacade = libraryfacade;
+		this.currUser = currUser;
+		this.currUserItems = currUserItems;
 //		initialize();
 	}
 
@@ -46,7 +61,7 @@ public class facultyGUI {
 	public void initialize() {
 		facultyGUI = new JFrame();
 		facultyGUI.setBounds(100, 100, 450, 300);
-		facultyGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		facultyGUI.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		facultyGUI.getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Faculty Page");
@@ -68,11 +83,16 @@ public class facultyGUI {
             sb.append(value).append("\n"); // Append each value followed by a newline character
         }
         textArea.setText(sb.toString());
-
-//        // Create JScrollPane and add the JTextArea to it
-//        JScrollPane scrollPane = new JScrollPane(textArea);
-//        scrollPane.setBounds(10, 31, 414, 58);
-//        facultyGUI.getContentPane().add(scrollPane);
+        
+        JButton btnNewButton = new JButton("Enter Library");
+        btnNewButton.setBounds(138, 123, 126, 23);
+        facultyGUI.getContentPane().add(btnNewButton);
+        
+        btnNewButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	libraryBookingGUI libGUI = new libraryBookingGUI(libraryfacade, currUser, currUserItems, (Client) faculty);
+            	libraryfacade = libGUI.initialize();
+            }
+        });
     }
-
 }

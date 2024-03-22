@@ -72,7 +72,7 @@ public class libraryBookingGUI {
 
         JFrame newFrame = new JFrame();
         newFrame.setBounds(400, 400, 600, 600); // Adjust frame size as needed
-        newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newFrame.getContentPane().setLayout(null);
         
         DefaultListModel<String> listModel = new DefaultListModel<>(); // Create a list model

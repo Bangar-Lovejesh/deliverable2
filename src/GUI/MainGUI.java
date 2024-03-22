@@ -108,27 +108,28 @@ public class MainGUI {
                 String type = userManagement.getType(username);
                 if (userManagement.readUsers(username, password)) {
                 	currUser = username;
+                	libraryfacade.populizer(currUser, currUserItems);
+                	
                 	if(type.equals("Faculty")) {
           	  			System.out.println("inside faculty if");
           	  			client = new Faculty(name, username,password);
-          	  			facultyGUI fGUI = new facultyGUI(client);
+          	  			facultyGUI fGUI = new facultyGUI(client, libraryfacade, currUser, currUserItems);
           	  			fGUI.initialize();
 //          	  			frame.dispose();
           	  		
           	  		} else {
-          	  		if(type.equals("Student")) {
-                		System.out.println("inside student if");
-              		  	client = new Student(name, username,password, new ArrayList<>());
-          	  		} else if(type.equals("Visitor")) {
-          	  			client = new visitor(name, username,password);
-          	  		} else {
-          	  			client = new NonFacultyStaff(name, username,password);
+	          	  		if(type.equals("Student")) {
+	                		System.out.println("inside student if");
+	              		  	client = new Student(name, username,password, new ArrayList<>());
+	          	  		} else if(type.equals("Visitor")) {
+	          	  			client = new visitor(name, username,password);
+	          	  		} else {
+	          	  			client = new NonFacultyStaff(name, username,password);
+	          	  		}
+	                	
+	                	libraryBookingGUI libGUI = new libraryBookingGUI(libraryfacade, currUser, currUserItems, client);
+	                	libraryfacade = libGUI.initialize();
           	  		}
-                	libraryfacade.populizer(currUser, currUserItems);
-                	libraryBookingGUI libGUI = new libraryBookingGUI(libraryfacade, currUser, currUserItems, client);
-                	libraryfacade = libGUI.initialize();
-          	  		}
-                	
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Error",
                             JOptionPane.ERROR_MESSAGE);
