@@ -43,7 +43,6 @@ public class MainGUI {
     private Client client;
     String type;
     private boolean bookDueSoon = false;
-//    static int bookOwed =0;
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {

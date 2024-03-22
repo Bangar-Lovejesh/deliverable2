@@ -55,32 +55,32 @@ public class UserManagement {
     }
 
     public Client writeUser(String name, String password, String email, String type) {
-    		if(name == null || password == null || email == null) return null;
+    	if(name == null || password == null || email == null) return null;
     	
-    	  try (BufferedReader br = new BufferedReader(new FileReader(csvPath))) {
-              String line;
-              while ((line = br.readLine()) != null) {
-                  String[] parts = line.split(",");
-                  System.out.println(line+ " "+ parts.length);
-                  String email1 = parts[2];
-                  if(email1.equals(email)) {
-                  	return null;
-                  }
-              }
-          } catch (IOException e) {
-              e.printStackTrace();
-          }
+		try (BufferedReader br = new BufferedReader(new FileReader(csvPath))) {
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            String[] parts = line.split(",");
+	            System.out.println(line+ " "+ parts.length);
+	            String email1 = parts[2];
+	            if(email1.equals(email)) {
+	            	return null;
+	            }
+	        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     	  //String username, String email, String password, Library libary
-    	  Client client;
-    	  if(type.equals("Student")) {
-    		  client = new Student(name, email,password, new ArrayList<>());
-    	  } else if(type.equals("Faculty")) {
-    		  client = new Faculty(name, email,password);
-    	  } else if(type.equals("Visitor")) {
-    		  client = new visitor(name, email,password);
-    	  } else {
-    		  client = new NonFacultyStaff(name, email,password);
-    	  }
+    	Client client;
+    	if(type.equals("Student")) {
+    		client = new Student(name, email,password, new ArrayList<>());
+    	} else if(type.equals("Faculty")) {
+    		client = new Faculty(name, email,password);
+    	} else if(type.equals("Visitor")) {
+    		client = new visitor(name, email,password);
+    	} else {
+    		client = new NonFacultyStaff(name, email,password);
+    	}
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvPath, true))) {
         	bw.write("\n"+client.getUsername()+","+client.getId()+","+client.getEmail()+","+client.getPassword()+","+type);
         } catch (IOException e) {

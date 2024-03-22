@@ -1,7 +1,7 @@
 package team_001;
 
 public class PasswordValidator {
-    private static final int MIN_LENGTH = 16;
+    private static final int MIN_LENGTH = 6;
 
     public static boolean validatePassword(String password) {
         return hasUppercase(password) && hasLowercase(password) &&
@@ -9,7 +9,7 @@ public class PasswordValidator {
                password.length() >= MIN_LENGTH;
     }
 
-    private static boolean hasUppercase(String password) {
+    public static boolean hasUppercase(String password) {
         for (char c : password.toCharArray()) {
             if (Character.isUpperCase(c)) {
                 return true;
@@ -18,7 +18,7 @@ public class PasswordValidator {
         return false;
     }
 
-    private static boolean hasLowercase(String password) {
+    public static boolean hasLowercase(String password) {
         for (char c : password.toCharArray()) {
             if (Character.isLowerCase(c)) {
                 return true;
@@ -27,7 +27,7 @@ public class PasswordValidator {
         return false;
     }
 
-    private static boolean hasNumber(String password) {
+    public static boolean hasNumber(String password) {
         for (char c : password.toCharArray()) {
             if (Character.isDigit(c)) {
                 return true;
@@ -36,7 +36,7 @@ public class PasswordValidator {
         return false;
     }
 
-    private static boolean hasSymbol(String password) {
+    public static boolean hasSymbol(String password) {
         for (char c : password.toCharArray()) {
             if (!Character.isLetterOrDigit(c)) {
                 return true;

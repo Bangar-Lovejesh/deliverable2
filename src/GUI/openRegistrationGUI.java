@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import team_001.Client;
+import team_001.PasswordValidator;
 import team_001.UserManagement;
 
 public class openRegistrationGUI {
@@ -114,20 +115,28 @@ public class openRegistrationGUI {
                 String email = emailField.getText();
                 String password = new String(passwordField.getPassword());
                 type = (String) typeComboBox.getSelectedItem();
-
-                // Perform registration
-                Client c = userManagement.writeUser(name, password, email, type);
-                clientList.add(c);
-//                System.out.println("Outside if " + c == null);
-                if (c != null) {
-                    JOptionPane.showMessageDialog(frame, "Registration successful", "Success",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    System.out.println("Inside if " +type);
-                    frame.dispose(); // Close registration frame
+                if(PasswordValidator.validatePassword(password)) {
+                    // Perform registration
+                    Client c = userManagement.writeUser(name, password, email, type);
+                    clientList.add(c);
+                    if (c != null) {
+                        JOptionPane.showMessageDialog(frame, "Registration successful", "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        System.out.println("Inside if " +type);
+                        frame.dispose(); // Close registration frame
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Registration failed", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(frame, "Registration failed", "Error",
+                	System.out.println(PasswordValidator.hasUppercase(password));
+                	System.out.println(PasswordValidator.hasNumber(password));
+                	System.out.println(PasswordValidator.hasSymbol(password));
+                	System.out.println(PasswordValidator.hasLowercase(password));
+                    JOptionPane.showMessageDialog(frame, "Registration failed: Password is not Strong enough", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
+
             }
         });
 
