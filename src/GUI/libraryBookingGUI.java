@@ -281,6 +281,7 @@ public class libraryBookingGUI {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         ArrayList<String> temp = new ArrayList<String>();
         boolean bookDueSoon = false;
+        boolean bookOverdue = false;
         long daysDifference = 0;
         
 //       In the following logic, I am moving stuff from currUserItemt -> temp
@@ -312,13 +313,14 @@ public class libraryBookingGUI {
         // Populate the return item box with currUserItems
         currUserItems = temp;
         
-        for(String s:currUserItems) {
+        for(String s : currUserItems) {
         	String[] parts = s.split(":");
+        	System.out.println(s);
         	if(parts.length == 3) {
-        		listModel.addElement(parts[0] + " OWED");
+        		listModel.addElement(parts[0] + "     Due: " + parts[1] + "    *OVERDUE");
         	}
         	else {
-        		listModel.addElement(parts[0]);
+        		listModel.addElement(parts[0] + "     Due: " + parts[1]);
         	}
         	
         }

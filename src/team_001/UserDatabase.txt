@@ -4,3 +4,4 @@ t2,2,t2@yorku.ca,t2t2,student
 t3,3,t3@yorku.ca,t3t3,student
 faculty,4,faculty,faculty,Faculty
 admin,5,admin,admin,Student
+test,4,test,u-AqP^/BA2KI,Vc,Student
