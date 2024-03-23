@@ -317,11 +317,14 @@ public class libraryBookingGUI {
         for(String s : currUserItems) {
         	String[] parts = s.split(":");
         	System.out.println(s);
+        	LocalDate date = LocalDate.parse(parts[1], formatter);
+        	date = date.plusDays(10);
+        	
         	if(parts.length == 3) {
-        		listModel.addElement(parts[0] + "     Due: " + parts[1] + "    *OVERDUE");
+        		listModel.addElement(parts[0] + "     Due: " + date.toString() + "    *OVERDUE");
         	}
         	else {
-        		listModel.addElement(parts[0] + "     Due: " + parts[1]);
+        		listModel.addElement(parts[0] + "     Due: " + date.toString());
         	}
         	
         }
