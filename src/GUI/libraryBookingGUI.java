@@ -301,6 +301,7 @@ public class libraryBookingGUI {
             }
             
             if(daysDifference >=10) {
+            	bookOverdue = true;
             	bookOwed++;      
             	temp.add(book + ":" + date + ":Owed");
             }
@@ -359,8 +360,11 @@ public class libraryBookingGUI {
         });
         
         newFrame.setVisible(true);
-        if(bookDueSoon){
-    		JOptionPane.showMessageDialog(newFrame, "YOU HAVE SOME BOOKS OVERDUE SOON", "OVERDUE NOTICE",
+        if(bookOverdue) {
+    		JOptionPane.showMessageDialog(newFrame, "YOU HAVE SOME BOOK(S) OVERDUE", "OVERDUE NOTICE",
+                    JOptionPane.ERROR_MESSAGE);
+        } else if(bookDueSoon){
+    		JOptionPane.showMessageDialog(newFrame, "YOU HAVE SOME BOOK(S) OVERDUE SOON", "OVERDUE NOTICE",
                     JOptionPane.ERROR_MESSAGE);
     	}
         
