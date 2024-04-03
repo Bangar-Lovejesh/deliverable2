@@ -39,10 +39,7 @@ class LibraryTest {
         Client client;
 
         client = new Faculty("John Doe", "johndoe@example.com", "Password123");
-        assertEquals("John Doe", client.getUsername());
-        
-       
-        
+        assertEquals("John Doe", client.getUsername());        
 
         // Test the borrowItem and isBorrowed methods
         Item item = ItemFactory.createPhysicalBook("Test Book", "Aadil Baig");
@@ -63,6 +60,7 @@ class LibraryTest {
         // Test the subscribe and getSubscribed methods
         Newsletter newsletter = new Newsletter("Studio News", "Test Author");
         client.subscribe(newsletter);
+        
         assertTrue(client.getSubcribed().containsKey(newsletter));
 
         // Test the unsubscribe method

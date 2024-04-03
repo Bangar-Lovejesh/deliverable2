@@ -11,7 +11,7 @@ abstract public class Client {
 	private String email;
 	private String password;
 	private HashMap<Item, LocalDate> borrowed = new HashMap<Item, LocalDate>();
-	private HashMap<Newsletter, String> subscribed;
+	private HashMap<Newsletter, String> subscribed = new HashMap<Newsletter, String>();
 	private Library library;
 	
 	public Client(String username, String email, String password) {
@@ -53,7 +53,7 @@ abstract public class Client {
 	
 	public boolean borrowItem(Item item) {
 		System.out.println("start of client.borrow");
-		if(this.library.borrowItem(this, item)) {
+     	if(this.library.borrowItem(this, item)) {
 		LocalDate dueDate = LocalDate.now().plusDays(30);
 		this.borrowed.put(item, dueDate);
 		System.out.println("end of client.borrow");
