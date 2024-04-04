@@ -10,7 +10,7 @@ abstract public class Client {
 	private int id;
 	private String email;
 	private String password;
-	private HashMap<Item, LocalDate> borrowed = new HashMap<Item, LocalDate>();
+	HashMap<Item, LocalDate> borrowed = new HashMap<Item, LocalDate>();
 	private HashMap<Newsletter, String> subscribed = new HashMap<Newsletter, String>();
 	private Library library;
 	
@@ -112,7 +112,4 @@ abstract public class Client {
 		this.borrowed = borrowed;
 	}
 	
-	public void addCourse() {
-		
-	}
 }

@@ -3,10 +3,10 @@ package team_001;
 import java.util.ArrayList;
 
 class UserBuilder {
-    private String email;
-    private String password;
+    String email;
+    String password;
     private String username;
-    private Library lib;
+    public Library lib;
     public UserBuilder setEmail(String email) {
         if (isValidEmail(email)) {
             this.email = email;
@@ -31,7 +31,8 @@ class UserBuilder {
     }
 
     private boolean isValidPassword(String password) {
-        return password.length() >= 0;
+        
+    	return password.length() > 0;
     }
     
     public UserBuilder setLibrary(Library lib) {
@@ -45,30 +46,22 @@ class UserBuilder {
     }
     
     public Client buildFaculty() {
-        if (email == null || password == null) {
-            throw new IllegalStateException("Email and password are required");
-        }
+       
         return new Faculty(username, email, password);
     }
     
     public Client buildStudent() {
-        if (email == null || password == null) {
-            throw new IllegalStateException("Email and password are required");
-        }
+
         return new Student(username, email, password, new ArrayList<>());
     }
 
     public Client buildNonFacultyStaff() {
-        if (email == null || password == null) {
-            throw new IllegalStateException("Email and password are required");
-        }
+  
         return new NonFacultyStaff(username, email, password);
     }
     
     public Client buildVisitor() {
-        if (email == null || password == null) {
-            throw new IllegalStateException("Email and password are required");
-        }
+      
         return new visitor(username, email, password);
     }
     

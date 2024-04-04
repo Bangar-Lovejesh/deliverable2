@@ -33,10 +33,11 @@ public class Library{
         }
     }
     public boolean borrowItem(Client client, Item item) {
-        int id = item.getID() + 5;
-        System.out.println("Inside borow Item " + copiesAvailable.get(id%5));
-        if (copiesAvailable.containsKey(id%5) && copiesAvailable.get(id%5) > 0) {
-            copiesAvailable.put(id, copiesAvailable.get(id%5) - 1);
+        int id = item.getID();
+        System.out.println(item.getID() + "DADDYYY");
+        System.out.println("Inside borow Item " + copiesAvailable.get(id));
+        if (copiesAvailable.containsKey(id) && copiesAvailable.get(id) > 0) {
+            copiesAvailable.put(id, copiesAvailable.get(id) - 1);
             this.updateCopiesAvailable(item.author, item.title, -1);
             return true;
         } else {
