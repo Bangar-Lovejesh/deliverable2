@@ -35,8 +35,9 @@ public class MainGUI {
     private JPasswordField passwordField;
     private String bookFilePath = "src\\team_001\\Inventory.txt";
     private String csvFilePath = "src\\team_001\\UserDatabase.txt";
+    private String booksOwned = "src\\team_001\\booksOwed.txt";
     private String currUser;
-    private LibraryFacade libraryfacade = new LibraryFacade(bookFilePath);
+    private LibraryFacade libraryfacade = new LibraryFacade(bookFilePath, booksOwned);
     private JComboBox<String> itemComboBox; // Declare JComboBox
     private ArrayList<String> currUserItems = new ArrayList<String>();
     ArrayList<Client> clientList = new ArrayList<>();

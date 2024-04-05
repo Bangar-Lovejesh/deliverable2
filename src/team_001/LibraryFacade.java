@@ -6,8 +6,8 @@ import java.util.HashMap;
 public class LibraryFacade {
     private Library library;
 
-    public LibraryFacade(String csvFilePath) {
-        this.library = Library.getInstance(csvFilePath);
+    public LibraryFacade(String csvFilePath, String booksOwed) {
+        this.library = Library.getInstance(csvFilePath, booksOwed);
     }
 
     public boolean borrowItem(Client client, Item item) {

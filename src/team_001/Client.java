@@ -19,7 +19,7 @@ abstract public class Client {
 		this.email = email;
 		this.password = password;
 		this.id = ++Client.current_id;
-		library = new Library("src\\team_001\\Inventory.txt");
+		library = new Library("src\\team_001\\Inventory.txt", "src\\team_001\\booksOwed.txt");
 	}
 	
 	public ArrayList<Item> checkItemsOverdue(BorrowedIterator iterator){

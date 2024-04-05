@@ -32,7 +32,7 @@ public class facultyGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					facultyGUI window = new facultyGUI(new Faculty(null, null, null), new LibraryFacade(""), "", new ArrayList<String>());
+					facultyGUI window = new facultyGUI(new Faculty(null, null, null), new LibraryFacade("", ""), "", new ArrayList<String>());
 					window.facultyGUI.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,6 +40,7 @@ public class facultyGUI {
 			}
 		});
 	}
+	
 
 	/**
 	 * Create the application.

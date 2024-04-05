@@ -3,14 +3,19 @@ package team_001;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +23,32 @@ class LibraryTest {
 	private Client client;
     private Item item;
     private Library library;
-	
+	private UserManagement mange;
+
 	@BeforeEach
     public void setUp() {
         client = new Faculty("test_user", "test@example.com", "password123");
         item = new PhysicalBook("Book", "1234");
-        library = new Library("src\\team_001\\Inventory.txt");
+        library = new Library("src\\team_001\\Inventorytest.txt", "src\\team_001\\booksOwedtest.txt");
+        mange = new UserManagement("src\\team_001\\userdatabasetest.txt");
+        mange.writeUser("name", "password", "email", "student");
     }
 	
 	
+    @AfterEach
+    public void tearDown() throws IOException {
+    	try {
+			RandomAccessFile file = new RandomAccessFile("src\\team_001\\userdatabasetest.txt", "rw");
+			file.setLength(0);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+	
+  
+    
 	@Test
 	void testClient() {
 		assertEquals("test_user", client.getUsername());
@@ -253,10 +275,70 @@ class LibraryTest {
 	    @Test
 	    public void testBuildLib() {
 	        UserBuilder userBuilder = new UserBuilder();
-	        userBuilder.setLibrary(new Library("src\\team_001\\Inventory.txt"));
+	        userBuilder.setLibrary(new Library("src\\team_001\\Inventory.txt", ""));
 
 	        assertNotNull(userBuilder.lib);
 	    }
+	    @Test
+	    public void testCreateVirtualBook() {
+	        VirtualBook virtualBook = ItemFactory.createVirtualBook("Title", "Author");
+	        assertEquals("Title", virtualBook.getTitle());
+	        assertEquals("Author", virtualBook.getAuthor());
+	    }
 
+	    @Test
+	    public void testCreatePhysicalBook() {
+	        PhysicalBook physicalBook = ItemFactory.createPhysicalBook("Title", "Author");
+	        assertEquals("Title", physicalBook.getTitle());
+	        assertEquals("Author", physicalBook.getAuthor());
+	    }
+
+	    @Test
+	    public void testCreateMagazine() {
+	        Magazine magazine = ItemFactory.createMagazine("Title", "Author");
+	        assertEquals("Title", magazine.getTitle());
+	        assertEquals("Author", magazine.getAuthor());
+	    }
+
+	    @Test
+	    public void testCreateCD() {
+	        CD cd = ItemFactory.createCD("Title", "Author");
+	        assertEquals("Title", cd.getTitle());
+	        assertEquals("Author", cd.getAuthor());
+	    }
+
+	    @Test
+	    public void testCreateNewsletter() {
+	        Newsletter newsletter = ItemFactory.createNewsLetter("Title", "Author");
+	        assertEquals("Title", newsletter.getTitle());
+	        assertEquals("Author", newsletter.getAuthor());
+	    }
+
+	    @Test
+	    void userMangment() {
+	    	assertTrue(mange.readUsers("email", "password"));
+	    	assertFalse(mange.readUsers("wrong", "wrong"));
+	    	
+	    	assertEquals("student", mange.getType("email"));
+	    	assertNull(mange.getType("dd"));
+	    	
+	    	
+	    	  String testName = "John Doe";
+	          String testPassword = "password123";
+	          String testEmail = "johndoe@example.com";
+	          String testType = "Student";
+	          
+	          Client testClient = mange.writeUser(testName, testPassword, testEmail, testType);
+	          assertNotNull(testClient);
+	         assertNull(mange.writeUser(testName, testPassword, "email", testType));
+	    
+	         
+	         Client newClient = mange.writeUser(testName, testPassword, "unique", "Faculty");
+	         assertNotNull(newClient);
+	         newClient = mange.writeUser(testName, testPassword, "unique2", "Visitor");
+	         assertNotNull(newClient);
+	    }
+	    
+	    
 }
 

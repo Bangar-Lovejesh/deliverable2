@@ -9,17 +9,19 @@ public class Library{
     public HashMap<Integer, Item> inventory;
     HashMap<Integer, Integer> copiesAvailable;
     private String csvFilePath;
+    private String booksOwned;
 
-    public Library(String csvFilePath) {
+    public Library(String csvFilePath, String booksOwned) {
         this.inventory = new HashMap<>();
         this.copiesAvailable = new HashMap<>();
         this.csvFilePath = csvFilePath;
+        this.booksOwned = booksOwned;
         loadInventoryFromCSV();
     }
     
-    public static Library getInstance(String csvFilePath) {
+    public static Library getInstance(String csvFilePath, String booksOwned) {
     	if(Library.library == null) {
-    		Library.library = new Library(csvFilePath);
+    		Library.library = new Library(csvFilePath, booksOwned);
     	}
     
     	return Library.library;	
@@ -67,7 +69,7 @@ public class Library{
         }
     }
     public void populizer(String currUser, ArrayList<String> currUserItems) {
-    	try (BufferedReader reader = new BufferedReader(new FileReader("src\\team_001\\booksOwed.txt"))) {
+    	try (BufferedReader reader = new BufferedReader(new FileReader(this.booksOwned))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
@@ -86,7 +88,7 @@ public class Library{
     
 
     public void bookKeeping(String name, ArrayList<String> list) {
-    	String filePath = "src\\team_001\\booksOwed.txt"; // Update with your file path
+    	String filePath = this.booksOwned; // Update with your file path
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -134,10 +136,10 @@ public class Library{
 
 
     
-    private void updateCopiesAvailable(String author, String title, int change) {
+    public void updateCopiesAvailable(String author, String title, int change) {
       
     	
-        File inputFile = new File("src\\team_001\\Inventory.txt");
+        File inputFile = new File(this.csvFilePath);
         File tempFile = new File("src\\team_001\\temp.txt");
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {

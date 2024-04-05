@@ -82,7 +82,7 @@ public class UserManagement {
     		client = new NonFacultyStaff(name, email,password);
     	}
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(csvPath, true))) {
-        	bw.write("\n"+client.getUsername()+","+client.getId()+","+client.getEmail()+","+client.getPassword()+","+type);
+        	bw.write(client.getUsername()+","+client.getId()+","+client.getEmail()+","+client.getPassword()+","+type + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
