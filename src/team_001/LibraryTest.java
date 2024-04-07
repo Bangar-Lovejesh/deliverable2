@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.AfterEach;
@@ -250,6 +251,7 @@ class LibraryTest {
 	        assertNotNull(student);
 	        assertTrue(student instanceof Student);
 	    }
+	    
 
 	    @Test
 	    public void testBuildNonFacultyStaff() {
@@ -338,6 +340,81 @@ class LibraryTest {
 	         newClient = mange.writeUser(testName, testPassword, "unique2", "Visitor");
 	         assertNotNull(newClient);
 	    }
+	    
+	    @Test 
+	    void testGetCoursesEmpty() {
+	    	Faculty testFaculty = new Faculty("testFaculty1", "testFaculty1@yorku.ca", "password123");
+	    	ArrayList<String> courses = testFaculty.getCourses();
+	    	
+	    	assertTrue(courses.size() == 0);
+	    }
+	    
+	    @Test
+	    void testPopularizer(){
+	    	LibraryFacade lib = new LibraryFacade("src\\team_001\\Inventorytest.txt", "src\\team_001\\booksOwedtest.txt");
+	    	
+	    	Faculty f = new Faculty("admin", "admin", "password123");
+	    	ArrayList<String> list = new ArrayList<String>();
+	    	list.add("Take Care");
+	    	lib.populizer("admin", list);
+	    }
+	    
+	    @Test
+	    void testBookkeeping(){
+	    	LibraryFacade lib = new LibraryFacade("src\\team_001\\Inventorytest.txt", "src\\team_001\\booksOwedtest.txt");
+	    	
+	    	Faculty f = new Faculty("admin", "admin", "password123");
+	    	ArrayList<String> list = new ArrayList<String>();
+	    	list.add("Take Care");
+	    	lib.bookKeeping("admin", list);
+	    }
+	    
+	    @Test 
+	    void testGetCourses() {
+	    	Faculty testFaculty = new Faculty("testFaculty2", "testFaculty2@yorku.ca", "password123");
+	    	ArrayList<String> courses = testFaculty.getCourses();
+	    	
+	    	assertTrue(courses.size() > 0);
+	    }
+	    
+	    @Test
+	    void testBorrow(){
+	    	LibraryFacade lib = new LibraryFacade("src\\team_001\\Inventorytest.txt", "src\\team_001\\booksOwedtest.txt");
+	    	
+	    	Client c = new Faculty("user", "user@yorku.ca", "password123");
+	    	
+	    	//CD;Take Care;Drake;577
+	    	HashMap<Integer, Item> inv = lib.getInventory();
+	    	Collection items = inv.values();
+	    	Item i = (Item) items.iterator().next();
+	    	assertTrue(lib.borrowItem(c, i));
+	    }
+	    
+	    @Test
+	    void testReturn(){
+	    	LibraryFacade lib = new LibraryFacade("src\\team_001\\Inventorytest.txt", "src\\team_001\\booksOwedtest.txt");
+	    	
+	    	Client c = new Faculty("user", "user@yorku.ca", "password123");
+	    	
+	    	//CD;Take Care;Drake;577
+	    	HashMap<Integer, Item> inv = lib.getInventory();
+	    	Collection items = inv.values();
+	    	Item i = (Item) items.iterator().next();
+	    	
+	    	library = lib.getLibrary();
+	    	
+	    	int initialCopies = library.copiesAvailable.get(i.ID);
+	    	
+	    	lib.returnItem(c, i);
+	    	
+	    	int finalCopies = library.copiesAvailable.get(i.ID);
+	    	
+	    	assertEquals(initialCopies + 1, finalCopies);
+	    }
+	    
+
+	    
+	    
 	    
 	    
 }

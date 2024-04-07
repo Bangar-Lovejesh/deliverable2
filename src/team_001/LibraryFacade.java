@@ -31,5 +31,9 @@ public class LibraryFacade {
     public void populizer(String currUser, ArrayList<String> currUserItems) {
     	library.populizer(currUser, currUserItems);
     }
+    
+    public Library getLibrary() {
+    	return library;
+    }
 
 }
