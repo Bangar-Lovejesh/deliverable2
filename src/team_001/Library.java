@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Library{
 	private static Library library = null;
     public HashMap<Integer, Item> inventory;
-    HashMap<Integer, Integer> copiesAvailable;
+    public HashMap<Integer, Integer> copiesAvailable;
     private String csvFilePath;
     private String booksOwned;
 

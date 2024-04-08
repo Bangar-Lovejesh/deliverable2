@@ -2,9 +2,9 @@ package team_001;
 
 import java.util.ArrayList;
 
-class UserBuilder {
-    String email;
-    String password;
+public class UserBuilder {
+    public String email;
+    public String password;
     private String username;
     public Library lib;
     public UserBuilder setEmail(String email) {

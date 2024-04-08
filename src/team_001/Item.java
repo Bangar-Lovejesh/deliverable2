@@ -4,7 +4,7 @@ public abstract class Item implements Cloneable {
     private static int lastAssignedID = 1;
 
     String title;
-    int ID;
+    public int ID;
     String author;
 
     public Item(String title, String author) {

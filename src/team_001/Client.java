@@ -10,7 +10,7 @@ abstract public class Client {
 	private int id;
 	private String email;
 	private String password;
-	HashMap<Item, LocalDate> borrowed = new HashMap<Item, LocalDate>();
+	public HashMap<Item, LocalDate> borrowed = new HashMap<Item, LocalDate>();
 	private HashMap<Newsletter, String> subscribed = new HashMap<Newsletter, String>();
 	private Library library;
 	
